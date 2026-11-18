@@ -169,7 +169,8 @@ const cases=[
   'Nhảy bậc công nghệ: xe đang bán chỉ có hỗ trợ lái cấp 2, L2++ mới thử trên VF 8 và VF 9, nhưng mục tiêu là cấp 4 không có người lái.',
   'Khung pháp lý chưa hoàn chỉnh: thử nghiệm chỉ sau khi được cấp phép; cơ chế thử nghiệm có kiểm soát, tiêu chuẩn an toàn và đào tạo vẫn đang xây dựng.',
   'Giao thông hỗn hợp đặc thù của Đông Nam Á; xe cấp 4 chỉ chạy trong khu vực đã quy hoạch và bản đồ hóa.',
-  'Thông tin công khai mỏng và lệch nhau: chưa nêu mẫu xe, tuyến, tốc độ; mô tả cảm biến khác nhau giữa các nguồn; mức tự động hóa hiện tại được nêu là cấp 2–3 (2023) hoặc cấp 2 (2026).'],
+  'Thông tin công khai mỏng và lệch nhau: chưa nêu mẫu xe, tuyến, tốc độ; mô tả cảm biến khác nhau giữa các nguồn; mức tự động hóa hiện tại được nêu là cấp 2–3 (2023) hoặc cấp 2 (2026).',
+  'Bài học từ chính sách xe điện cùng bối cảnh: Hà Nội dự kiến hạn chế xe máy xăng ở Vành đai 1 từ 1/7/2026 nhưng đã lùi lộ trình (2028) và chỉ thí điểm hẹp, vì đổi quá nhanh so với khả năng thích nghi của người dân. Cơ quan quản lý robotaxi cũng đứng trước rủi ro tương tự nếu đặt mốc trước khi có khung pháp lý và niềm tin.'],
  sol:[
   'Hợp tác thay vì tự làm toàn bộ: NVIDIA cho nền tảng tính toán, Autobrains cho phần mềm AI (hơn 300 bằng sáng chế theo báo cáo).',
   'Đi từng bậc: L2++ trên xe bán ra → Robo-Car thử ở khu vực kiểm soát tại Hà Nội → 200 xe cấp 4 trong một khu đô thị riêng.',
@@ -186,6 +187,7 @@ const cases=[
   ['Trang giải thích “Tìm hiểu chi tiết về ô tô tự lái” của VinFast (6/1/2023): xe VinFast đã có một số tính năng tự hành cấp 2–3 (trợ lái thông minh, kiểm soát hành trình chủ động, cảnh báo va chạm đa điểm, đỗ xe tự động, giám sát người lái); xe tự hành hoàn toàn vẫn là mục tiêu tương lai. Đây là trang giải thích của hãng, không phải số liệu vận hành',PART,'VinFast, bài “Tìm hiểu chi tiết về ô tô tự lái”, vinfastauto.com, đăng 06/01/2023'],
   ['Năm 2021 VinFast giới thiệu 3 mẫu xe “tự lái” VF31, VF32, VF33; báo chí ghi cấp 2–3 (Báo Pháp luật) hoặc cấp 3 (Oto.com.vn); các nguồn lệch nhau',PART,L('Oto.com.vn','https://oto.com.vn/thi-truong-o-to/sau-president-vinfast-tiep-tuc-ra-mat-them-3-dong-xe-lan-nay-la-xe-dien-tu-lai-articleid-mqui4f7')+' · '+L('Báo Pháp luật','https://doanhnhan.baophapluat.vn/vinfast-ra-mat-3-mau-xe-tu-lai-dau-tien-cua-viet-nam-co-the-xuat-hien-tren-duong-pho-tu-thang-112021-37119.md')],
   ['Cấu hình cảm biến: Viettimes ghi 14 camera, 9 radar, 1 LiDAR, 2 chip Thor; CafeF ghi 12 camera, 9 radar, tối đa 4 LiDAR, 2 chip Orin; thông cáo 1/2026 mô tả Robo-Car 7 camera, không LiDAR, radar hay bản đồ HD',PART,'Các nguồn lệch nhau, cần hỏi lại hãng hoặc NVIDIA'],
+  ['Đối chiếu bối cảnh chính sách (Hà Nội, không phải chính sách của VinFast): đề án vùng phát thải thấp trong Vành đai 1 đã lùi lộ trình cấm xe máy xăng không đạt chuẩn sang 2028; giai đoạn 1 (1/7–31/12/2026) chỉ thí điểm ở một phần phường Hoàn Kiếm. Các nguồn chưa thống nhất về xe máy công nghệ. Lý do “người dân chưa kịp thích nghi” là cách nhóm diễn giải, chưa thấy nguồn nêu rõ',PART,L('VTV','https://vtv.vn/ha-noi-cam-xe-may-xang-khong-dat-chuan-vao-vanh-dai-1-tu-nam-2028-thi-diem-tu-1-7-2026-100260615171236694.htm')+' · '+L('VOV Giao thông','https://vovgiaothong.vn/newsaudio/ha-noi-bo-de-xuat-cam-xe-may-xang-bo-sung-nhieu-han-che-phuong-tien-d52913.html')+' · '+L('VnEconomy','https://vneconomy.vn/automotive/ha-noi-dieu-chinh-lo-trinh-vung-phat-thai-thap-chua-cam-xe-may-xang-tu-17.htm')],
   ['Robo-Car “đang lái tự động trong giao thông thật” ở Hà Nội (lời CEO Autobrains)',PART,L('TechNode','https://technode.global/2026/01/27/vinfast-partners-autobrains-for-autonomous-driving-technology-and-robo-car/')+' · chưa có dữ liệu km hay số lần can thiệp'],
   ],
  hyp:{
@@ -344,7 +346,7 @@ function common(){
  <div class="card"><ul>
   <li>Những bên “đi tiếp được” đều có ít nhất một điều: mở rộng theo bậc thay vì một bước, dữ liệu có người ngoài kiểm tra, quan hệ minh bạch với cơ quan quản lý, và chi phí mỗi xe giảm dần.</li>
   <li>Hai bên gặp khó nhất (Cruise, và một phần Tesla) đều có vấn đề về niềm tin vào dữ liệu hoặc về tốc độ so với lời hứa, không chỉ về công nghệ.</li>
-  <li>VinFast cho thấy một tình huống khác: chưa có kết cục để so sánh. Kế hoạch (200 xe cấp 4, cuối 2027) đã công bố, nhưng giấy phép và dữ liệu an toàn thì chưa có, nên điều cần học là biết đòi bằng chứng gì trước khi chấp thuận.</li>
+  <li>VinFast cho thấy một tình huống khác: chưa có kết cục để so sánh. Kế hoạch (200 xe cấp 4, cuối 2027) đã công bố, nhưng giấy phép và dữ liệu an toàn thì chưa có, nên điều cần học là biết đòi bằng chứng gì trước khi chấp thuận. Chuyện Hà Nội lùi lộ trình cấm xe máy xăng (từ 2026 sang 2028, thí điểm hẹp) nhắc rằng mốc đặt quá sớm so với khả năng thích nghi sẽ phải điều chỉnh, nên cần mở rộng theo bậc và có điều kiện dừng.</li>
   <li>Waymo cho thấy “có người ngoài kiểm chứng” cũng có giới hạn: mẫu nhỏ (11 khiếu nại), cùng do hãng và bên bảo hiểm thực hiện, chưa bình duyệt khi công bố.</li></ul>
   <p><b>Câu hỏi gợi ý:</b> (1) Giải pháp nào trong bốn case có người ngoài kiểm chứng, giải pháp nào chỉ do chính công ty nói? (2) Nếu Cruise làm điều tra độc lập ngay từ tuần đầu, kết cục có khác không? (3) Số liệu nào bạn muốn kiểm lại trước khi tin?</p></div>
  <div class="card"><h3>Bảng tổng hợp</h3><div class="tw"><table>
