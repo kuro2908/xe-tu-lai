@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zone H · Xe tự lái · 4 Case</title>
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --ink:#1d2127; --muted:#5d6672; --line:#e2e0d9;
+  --accent:#0f6b5c; --accent-soft:#dff0eb;
+  --warn:#9a5b00; --warn-soft:#fdf0d9;
+  --bad:#a62d2d; --bad-soft:#fbe4e2;
+  --good:#1d6b3a; --good-soft:#dff2e5;
+  --info:#2a5599; --info-soft:#e3ecf9;
+  --shadow:0 1px 2px rgba(20,25,30,.06),0 4px 16px rgba(20,25,30,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#14171a;--surface:#1c2024;--ink:#e8eaec;--muted:#98a2ad;--line:#2d3339;
+  --accent:#5cc7b2;--accent-soft:#183a34;--warn:#f0b45a;--warn-soft:#3a2c12;
+  --bad:#f08a84;--bad-soft:#3d1d1b;--good:#7fd69b;--good-soft:#17331f;--info:#8db4f0;--info-soft:#192a45;
+  --shadow:none}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent);text-underline-offset:2px;word-break:break-word}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.brand{padding:14px 0 8px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.brand h1{font-size:18px;margin:0}
+.brand span{color:var(--muted);font-size:13px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:0 0 10px;scrollbar-width:thin}
+nav.tabs button{flex:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:8px 14px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer}
+nav.tabs button[aria-selected=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+@media (prefers-color-scheme:dark){nav.tabs button[aria-selected=true]{color:#0c1311}}
+nav.tabs button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{padding:24px 0 64px}
+section.panel{display:none}
+section.panel.on{display:block}
+h2{font-size:26px;line-height:1.25;margin:0 0 6px}
+h3{font-size:18px;margin:0 0 10px}
+.lead{color:var(--muted);margin:0 0 20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.hero{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:6px}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.chip.neutral{background:var(--line);color:var(--muted)}
+.role{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0 0}
+.role b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+ul.ev{margin:0;padding:0;list-style:none}
+ul.ev li{padding:10px 0;border-top:1px solid var(--line)}
+ul.ev li:first-child{border-top:0;padding-top:0}
+.src{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:820px){.grid3{grid-template-columns:1fr}}
+.col{border-radius:12px;padding:16px;border:1px solid var(--line);background:var(--surface)}
+.col h4{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.05em}
+.col.k{background:var(--bad-soft)} .col.k h4{color:var(--bad)}
+.col.g{background:var(--info-soft)} .col.g h4{color:var(--info)}
+.col.r{background:var(--good-soft)} .col.r h4{color:var(--good)}
+.col ul{margin:0;padding-left:18px} .col li{margin-bottom:8px}
+details.env{border:2px dashed var(--warn);background:var(--warn-soft);border-radius:14px;padding:0;margin-bottom:16px}
+details.env summary{cursor:pointer;padding:14px 18px;font-weight:700;color:var(--warn);list-style:none}
+details.env summary::before{content:"✉ ";}
+details.env .in{padding:0 18px 16px}
+.bignum{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 0}
+.bignum div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:130px}
+.bignum strong{display:block;font-size:20px;color:var(--accent)}
+.bignum small{color:var(--muted);font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border-top:0}
+.tw{overflow-x:auto}
+.badge{display:inline-block;white-space:nowrap;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px}
+.b-ok{background:var(--good-soft);color:var(--good)}
+.b-part{background:var(--warn-soft);color:var(--warn)}
+.b-no{background:var(--bad-soft);color:var(--bad)}
+.teach{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:820px){.teach{grid-template-columns:1fr}}
+.teach div{border-radius:12px;padding:14px 16px;font-size:15px}
+.t-y{background:var(--warn-soft)} .t-g{background:var(--good-soft)} .t-b{background:var(--info-soft)} .t-n{background:var(--line)}
+.teach b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.note{border-left:4px solid var(--warn);background:var(--warn-soft);padding:12px 16px;border-radius:0 10px 10px 0;margin:0 0 16px;font-size:15px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;position:relative;padding:8px 0 8px 42px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.overview{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:700px){.overview{grid-template-columns:1fr}}
+.ocard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;box-shadow:var(--shadow);text-align:left;font:inherit;color:inherit}
+.ocard:hover{border-color:var(--accent)}
+.ocard b{font-size:18px;display:block} .ocard span{color:var(--muted);font-size:14px}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.pager button{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:10px;font:inherit;cursor:pointer}
+.legend{font-size:14px;display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 12px}
+@media print{header.top,.pager{display:none}section.panel{display:block!important;page-break-before:always}details.env{display:block}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="wrap">
+  <div class="brand"><h1>Zone H · Xe tự lái</h1><span>Bằng chứng nào đủ để thêm xe, thêm vùng chạy? · bản kiểm chứng 18/11/2026</span></div>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+ </div>
+</header>
+<main class="wrap" id="main"></main>
+
+<script>
+/* ---------- DỮ LIỆU ---------- */
+const OK='<span class="badge b-ok">✔ Đã đối chiếu</span>',
+      PART='<span class="badge b-part">◐ Nguồn thứ cấp / hãng tự công bố</span>',
+      NO='<span class="badge b-no">✖ Không xác nhận được</span>';
+const L=(t,u)=>`<a href="${u}" target="_blank" rel="noopener">${t}</a>`;
+
+const cases=[
+{
+ id:'A', tab:'A · Tesla', flag:'Mỹ · 2025', title:'Một hãng xe điện, Mỹ, 2025', real:'Tesla Robotaxi, Austin',
+ teaser:'Ra mắt nhỏ, có giám sát viên; cơ quan quản lý chỉ điều tra sau.',
+ context:'Một hãng xe điện lớn ra mắt dịch vụ taxi tự lái cho khách thật ở một thành phố Mỹ. Người dùng là khách được mời.',
+ role:'Bạn là lãnh đạo hãng, ngày 23/6/2025. Bạn cần quyết có thêm xe, mở rộng vùng chạy, hoặc bỏ người giám sát hay không.',
+ evidence:[
+  ['Dịch vụ mở ngày 22/6/2025 với chưa đến 24 xe, chỉ chạy ban ngày, thời tiết tốt, vùng giới hạn; mỗi xe có một giám sát viên ngồi ghế phụ.','Báo chí: UPI, NBC'],
+  ['Trong 1–2 ngày đầu, khách đăng clip xe lấn làn ngược chiều qua vạch vàng đôi và phanh gấp khi đi ngang xe cảnh sát; dữ liệu thành phố có 1 báo cáo “mối lo an toàn” ngày 22/6.','Clip người dùng, dữ liệu thành phố, qua báo chí'],
+  ['Ngày 23/6, NHTSA cho biết đã liên hệ hãng để hỏi thông tin; cơ quan này không phê duyệt công nghệ trước mà điều tra sau sự cố.','NHTSA, qua UPI và Fortune'],
+  ['Hệ thống chỉ dùng camera, không LiDAR hay radar; một cuộc điều tra riêng của NHTSA về phần mềm lái có giám sát của hãng vẫn đang mở.','Báo chí']],
+ pressure:'Lãnh đạo hãng công khai nói đây là bước ra mắt thành công và robotaxi là hướng chiến lược; cơ quan quản lý và báo chí đang hỏi về các clip.',
+ outcome:'Dịch vụ không dừng lại. Ngày 22/1/2026, hơn 7 tháng sau, hãng bắt đầu chở một số chuyến ở Austin mà trong xe không còn giám sát viên; theo Electrek, một số giám sát viên chỉ chuyển sang xe đi kèm. Theo Electrek, đến thời điểm đó đã có ít nhất 8 vụ va chạm được báo cho NHTSA.',
+ nums:[['7 tháng','giữa hai mốc'],['≥ 8 vụ','Electrek tổng hợp (1/2026)'],['14 vụ','NHTSA, 8 tháng đầu'],['17 vụ','7/2025–3/2026']],
+ hard:[
+  'Va chạm: 14 vụ báo NHTSA trong 8 tháng đầu; 17 vụ từ 7/2025 đến 3/2026, trong đó 2 vụ do người điều khiển từ xa lái xe (tốc độ thấp, chỉ thiệt hại tài sản).',
+  'Chậm hơn lời hứa: lãnh đạo hẹn bỏ giám sát viên từ cuối 2025 nhưng đến 1/2026 mới làm, và ban đầu giám sát viên chỉ chuyển sang xe đi kèm.',
+  'Số báo cáo sự cố tiếp tục tăng: Electrek (10/2026) đếm 36 báo cáo sự cố robotaxi, nhưng kỳ báo cáo khác nên không so trực tiếp với số 17.'],
+ sol:[
+  'Đi từng bậc: giám sát viên trong xe → xe đi kèm → bỏ giám sát viên (từ 1/2026).',
+  'Giữ hỗ trợ từ xa cho tình huống hệ thống bị kẹt.',
+  'Công bố chi tiết các vụ va chạm báo cho NHTSA (từ 5/2026 hãng bỏ che các tường thuật sự cố).',
+  'Mở rộng địa lý có kiểm soát: Dallas và Houston từ 18/4/2026, toàn khu đô thị Austin sau đó.'],
+ res:[
+  'Dịch vụ không người giám sát chạy ở 3 thành phố Texas: Austin, Dallas, Houston (nhiều nguồn khớp).',
+  'Hãng không công bố quy mô đội xe (Reuters).'],
+ table:[
+  ['14 vụ va chạm báo NHTSA trong 8 tháng đầu',OK,L('Bloomberg Law','https://news.bloomberglaw.com/tech-and-telecom-law/teslas-austin-robotaxis-report-14-crashes-in-first-eight-months')],
+  ['17 vụ (7/2025–3/2026), 2 vụ do người điều khiển từ xa lái',OK,L('TechCrunch 15/5/2026','https://www.techcrunch.com/2026/05/15/tesla-reveals-two-robotaxi-crashes-involving-teleoperators/')+' · '+L('Electrek 15/5/2026','https://electrek.co/2026/05/15/tesla-unredacts-robotaxi-crash-narratives-nhtsa/')],
+  ['36 báo cáo sự cố (Electrek, 10/2026) – kỳ báo cáo khác, chưa so với CSDL NHTSA',PART,L('Electrek 15/10/2026','https://electrek.co/2026/10/15/tesla-remote-operators-crashing-robotaxis/')],
+  ['≥ 8 vụ, bỏ giám sát viên từ 22/1/2026 (Electrek tự tổng hợp, có quan điểm phê phán)',PART,L('Electrek 22/1/2026','https://electrek.co/2026/01/22/tesla-starts-robotaxi-rides-without-safety-monitor-in-austin-what-you-need-to-know/')],
+  ['Dallas, Houston mở không giám sát từ 18/4/2026; Austin từ 1/2026',OK,L('Automotive World','https://www.automotiveworld.com/news/tesla-launches-robotaxi-in-dallas-houston-ahead-of-q1-results/')+' · '+L('Electrek 18/4/2026','https://electrek.co/2026/04/18/tesla-robotaxi-launches-dallas-houston-small-geofences/')],
+  ['Mở ngày 22/6/2025, chưa đến 24 xe; NHTSA hỏi hãng ngày 23/6',PART,L('UPI 24/6/2025','https://www.upi.com/Top_News/US/2025/06/24/tesla-robotaxi-driving-incidents/2351750776736/')+' · '+L('Fortune 25/6/2025','https://fortune.com/2025/06/25/tesla-nhtsa-federal-regulators-traffic-safety-elon-musk/')],
+  ],
+ teacher:{
+  why:'quy mô rất nhỏ, có người giám sát và hỗ trợ từ xa, và ở Texas không có cơ quan nào chặn trước.',
+  miss:'số liệu va chạm do chính hãng công bố, định nghĩa “không có giám sát viên”, số dặm theo từng mức giám sát.',
+  good:'bắt đầu nhỏ, giới hạn vùng và giờ chạy.',
+  open:'ngưỡng nào của “đủ bằng chứng” khi chỉ mình hãng nắm dữ liệu?'}
+},
+{
+ id:'B', tab:'B · VinFast', flag:'Việt Nam · 2026', title:'Một hãng xe điện, Việt Nam, cuối 2026', real:'VinFast (Vingroup), Cần Giờ – TP.HCM',
+ teaser:'Chưa có kết cục: robotaxi cấp 4 dự kiến cuối 2027, chưa cấp phép, chưa có dữ liệu an toàn công khai.',
+ context:'Một hãng xe điện Việt Nam, đang bán xe có hỗ trợ lái cấp 2, công bố kế hoạch thử nghiệm taxi tự lái cấp 4 trong một khu đô thị của chính tập đoàn. Đây là case đang diễn ra: chưa có kết cục để mở phong bì.',
+ role:'Bạn là cán bộ cơ quan quản lý giao thông TP.HCM, cuối 10/2026. Hãng đề nghị thử nghiệm 200 taxi tự lái cấp 4 ở Cần Giờ vào cuối 2027. Bạn cần quyết có chấp thuận chủ trương, chấp thuận có điều kiện, yêu cầu làm thêm hay chưa chấp thuận.',
+ evidence:[
+  ['Ngày 27/1/2026 hãng công bố hợp tác với Autobrains (Israel) để phát triển L2++ cho xe tương lai và một “Robo-Car” hướng tới cấp 4 giá phải chăng. Robo-Car đang thử ở khu vực kiểm soát tại Hà Nội; chưa nêu mốc thời gian, giá hay mục tiêu bán.','Thông cáo hãng và đối tác, qua TechNode'],
+  ['Xe VinFast đang bán có hỗ trợ lái cấp 2; hệ thống L2++ đang thử nghiệm trên VF 8 và VF 9.','Thông cáo, qua TechNode'],
+  ['Ngày 1/6/2026 tại Đài Bắc (Computex), hãng công bố cùng NVIDIA và Autobrains một nền tảng cấp 4 cho Đông Nam Á, dựa trên NVIDIA DRIVE Hyperion 10 và phần mềm Agentic AI của Autobrains. Thông cáo không nêu mốc thời gian, địa điểm hay số xe.','Thông cáo hãng, qua The Investor'],
+  ['Về mức tự động hóa của xe đang bán, các phát ngôn khác nhau: trang giải thích của VinFast (6/1/2023) nói một số dòng xe đã có tính năng của xe tự hành “cấp độ 2–3” và xe tự hành hoàn toàn vẫn là mục tiêu tương lai; thông cáo 1/2026 nói xe bán ra có hỗ trợ lái cấp 2.','Trang VinFast (6/1/2023), TechNode (1/2026)'],
+  ['Báo cáo kết quả quý II/2026 (19/10/2026): dự kiến thử nghiệm 200 taxi cấp 4 tại Vinhomes Green Paradise, Cần Giờ, vào cuối 2027, chỉ sau khi cơ quan chức năng chấp thuận. Chưa công bố mẫu xe, phạm vi tuyến, tốc độ vận hành hay thời điểm thương mại.','Báo cáo của hãng, qua Viettimes và VTC/CafeF']],
+ pressure:'Hãng muốn mang tự lái “từ người dùng tiên phong đến người dùng đại trà”. Cơ chế thử nghiệm có kiểm soát, tiêu chuẩn an toàn và quy trình đào tạo vẫn đang được xây dựng cùng cơ quan chức năng. Xe cấp 4 chỉ chạy trong khu vực đã quy hoạch và bản đồ hóa, gặp tình huống vượt khả năng phải tự dừng an toàn.',
+ outcome:'Chưa có kết cục. Đến 18/11/2026 chưa tìm thấy thông tin về việc cấp phép hay chạy thử 200 xe ở Cần Giờ; mốc dự kiến là cuối 2027. Thay vì mở kết cục, nhóm làm bài tập đảo ngược: liệt kê 5 loại bằng chứng bạn sẽ đòi hãng cung cấp trước khi đồng ý, rồi đối chiếu với mục 3 “Bảng đối chiếu bằng chứng” bên dưới xem hiện đã có loại nào.',
+ nums:[['200 xe','taxi cấp 4 dự kiến'],['Cuối 2027','mốc dự kiến, cần cấp phép'],['L2 / L2++','mức đang bán / đang thử'],['Chưa có','dữ liệu an toàn công khai']],
+ hard:[
+  'Nhảy bậc công nghệ: xe đang bán chỉ có hỗ trợ lái cấp 2, L2++ mới thử trên VF 8 và VF 9, nhưng mục tiêu là cấp 4 không có người lái.',
+  'Khung pháp lý chưa hoàn chỉnh: thử nghiệm chỉ sau khi được cấp phép; cơ chế thử nghiệm có kiểm soát, tiêu chuẩn an toàn và đào tạo vẫn đang xây dựng.',
+  'Giao thông hỗn hợp đặc thù của Đông Nam Á; xe cấp 4 chỉ chạy trong khu vực đã quy hoạch và bản đồ hóa.',
+  'Thông tin công khai mỏng và lệch nhau: chưa nêu mẫu xe, tuyến, tốc độ; mô tả cảm biến khác nhau giữa các nguồn; mức tự động hóa hiện tại được nêu là cấp 2–3 (2023) hoặc cấp 2 (2026).'],
+ sol:[
+  'Hợp tác thay vì tự làm toàn bộ: NVIDIA cho nền tảng tính toán, Autobrains cho phần mềm AI (hơn 300 bằng sáng chế theo báo cáo).',
+  'Đi từng bậc: L2++ trên xe bán ra → Robo-Car thử ở khu vực kiểm soát tại Hà Nội → 200 xe cấp 4 trong một khu đô thị riêng.',
+  'Chọn môi trường kiểm soát: khu đô thị riêng ở Cần Giờ, vùng chạy cố định, xe tự dừng an toàn khi gặp tình huống ngoài khả năng.',
+  'Chủ động làm việc với cơ quan quản lý để xây cơ chế thử nghiệm có kiểm soát trước khi chạy.'],
+ res:[
+  'Chưa có dịch vụ robotaxi mở cho khách, chưa thấy giấy phép, chưa có số km thử hay dữ liệu sự cố công bố.',
+  'Mốc dự kiến duy nhất: 200 xe tại Cần Giờ cuối 2027, nếu được chấp thuận.',
+  'Hầu hết nguồn là thông cáo của hãng và đối tác, báo chí đăng lại; chưa có kiểm chứng độc lập.'],
+ table:[
+  ['Hợp tác VinFast – Autobrains (27/1/2026): L2++ và Robo-Car; Robo-Car thử ở khu vực kiểm soát tại Hà Nội, không nêu mốc thời gian',OK,L('TechNode, 27/1/2026','https://technode.global/2026/01/27/vinfast-partners-autobrains-for-autonomous-driving-technology-and-robo-car/')],
+  ['Hợp tác VinFast – NVIDIA – Autobrains công bố 1/6/2026 (Computex, Đài Bắc), nền tảng cấp 4 cho Đông Nam Á, DRIVE Hyperion 10',OK,L('The Investor','https://theinvestor.vn/vinfast-partners-with-nvidia-autobrains-to-develop-level-4-robotaxi-system-for-southeast-asia-d19221.html')+' · '+L('VietnamPlus','https://en.vietnamplus.vn/vinfast-nvidia-autobrains-join-forces-on-level-4-robotaxi-project-post343794.vnp')+' · '+L('Vingroup','https://vingroup.net/en/news/detail/3798/vinfast-and-autobrains-announce-strategic-partnership-on-developing-autonomous-driving-technology-and-affordable-robo-ca')],
+  ['200 taxi cấp 4 tại Vinhomes Green Paradise (Cần Giờ), cuối 2027, chỉ sau khi được cấp phép (trích báo cáo quý II/2026, 19/10/2026)',OK,L('Viettimes','https://viettimes.vn/vinfast-chuan-bi-thu-nghiem-200-taxi-khong-nguoi-lai-tai-tphcm-post207437.html')+' · '+L('VTC qua CafeF','https://cafef.vn/robotaxi-cap-do-4-cua-vinfast-tham-gia-cuoc-dua-tu-hanh-toan-cau-188261025084309649.chn')],
+  ['Trang giải thích “Tìm hiểu chi tiết về ô tô tự lái” của VinFast (6/1/2023): xe VinFast đã có một số tính năng tự hành cấp 2–3 (trợ lái thông minh, kiểm soát hành trình chủ động, cảnh báo va chạm đa điểm, đỗ xe tự động, giám sát người lái); xe tự hành hoàn toàn vẫn là mục tiêu tương lai. Đây là trang giải thích của hãng, không phải số liệu vận hành',PART,'VinFast, bài “Tìm hiểu chi tiết về ô tô tự lái”, vinfastauto.com, đăng 06/01/2023'],
+  ['Năm 2021 VinFast giới thiệu 3 mẫu xe “tự lái” VF31, VF32, VF33; báo chí ghi cấp 2–3 (Báo Pháp luật) hoặc cấp 3 (Oto.com.vn); các nguồn lệch nhau',PART,L('Oto.com.vn','https://oto.com.vn/thi-truong-o-to/sau-president-vinfast-tiep-tuc-ra-mat-them-3-dong-xe-lan-nay-la-xe-dien-tu-lai-articleid-mqui4f7')+' · '+L('Báo Pháp luật','https://doanhnhan.baophapluat.vn/vinfast-ra-mat-3-mau-xe-tu-lai-dau-tien-cua-viet-nam-co-the-xuat-hien-tren-duong-pho-tu-thang-112021-37119.md')],
+  ['Cấu hình cảm biến: Viettimes ghi 14 camera, 9 radar, 1 LiDAR, 2 chip Thor; CafeF ghi 12 camera, 9 radar, tối đa 4 LiDAR, 2 chip Orin; thông cáo 1/2026 mô tả Robo-Car 7 camera, không LiDAR, radar hay bản đồ HD',PART,'Các nguồn lệch nhau, cần hỏi lại hãng hoặc NVIDIA'],
+  ['Robo-Car “đang lái tự động trong giao thông thật” ở Hà Nội (lời CEO Autobrains)',PART,L('TechNode','https://technode.global/2026/01/27/vinfast-partners-autobrains-for-autonomous-driving-technology-and-robo-car/')+' · chưa có dữ liệu km hay số lần can thiệp'],
+  ],
+ hyp:{
+  claim:'Agent AI mới của hãng phải được hoàn thiện logic và kiểm chứng (validate) trước khi dùng cho khâu an toàn, nên mốc cuối 2027 sẽ không đạt như mong muốn.',
+  why:['Agent chưa hoàn thiện sinh ra kết quả sai, phải rà soát và làm lại, tốn thêm thời gian.','Kết quả “đạt” sai từ khâu mô phỏng hoặc phân tích dữ liệu khiến đội ngũ tưởng đã sẵn sàng rồi phải quay lại.','Hồ sơ an toàn cần truy vết được; nếu không giải thích được cách agent làm thì mọi sản phẩm của nó đều phải kiểm lại bằng tay.'],
+  check:'Cần hỏi hãng: agent làm việc gì (viết code, kiểm thử, phân tích dữ liệu hay chỉ trò chuyện)? Có số đo hiệu quả công khai không? Ai kiểm tra kết quả của nó? Có kế hoạch dự phòng nếu không đạt không?'},
+ teacher:{
+  why:'case này chưa có kết cục, dùng để luyện thói quen hỏi “bằng chứng đâu” trước khi quyết. Điểm khác 3 case còn lại: quyết định nằm ở phía cơ quan quản lý và bằng chứng chủ yếu là kế hoạch, chưa phải số liệu vận hành.',
+  miss:'số km thử và tỷ lệ can thiệp của người ở Hà Nội, kịch bản xử lý sự cố, tiêu chí cấp phép, mẫu xe và cấu hình cảm biến chính thức.',
+  good:'bắt đầu trong khu đô thị riêng với vùng chạy cố định, quy mô 200 xe, chờ cấp phép và dựa vào đối tác có kinh nghiệm.',
+  open:'khi chưa có dữ liệu an toàn công khai, cơ quan quản lý nên yêu cầu gì trước khi chấp thuận? Hai nguồn mô tả cảm biến khác nhau, và mức tự động hóa hiện tại được nêu là cấp 2–3 (2023) hay cấp 2 (2026); bạn tin nguồn nào và hỏi lại ai? Nếu hãng dùng thêm một công cụ AI mới để làm nhanh hơn, đó có phải là bằng chứng an toàn hơn không, hay chỉ thêm một thứ cần kiểm chứng?'}
+},
+{
+ id:'C', tab:'C · Cruise', flag:'Mỹ · 2023', title:'Một dịch vụ taxi tự lái, Mỹ, 2023', real:'Cruise (GM), San Francisco',
+ teaser:'Tai nạn chưa phải lý do duy nhất; mất niềm tin vào dữ liệu mới là điều quyết định.',
+ context:'Một công ty con của hãng ô tô lớn chở khách trả tiền không có tài xế ở một thành phố lớn ven biển nước Mỹ.',
+ role:'Bạn là cán bộ cơ quan cấp phép xe của bang, những ngày trước 24/10/2023. Bạn cần quyết có cho công ty giữ giấy phép chạy không người lái hay không.',
+ evidence:[
+  ['Tháng 8/2023, cơ quan điều tiết dịch vụ công ích của bang cho phép công ty này và một đối thủ chạy xe không người lái thu tiền 24/7 trên toàn thành phố.','Cơ quan nhà nước, qua báo chí'],
+  ['Vài ngày sau, hai xe của công ty va chạm (có vụ xe cứu hỏa tông vào xe đang dừng ở đèn xanh).','Cơ quan cấp phép, qua báo chí'],
+  ['Ngày 2/10/2023, một người đi bộ bị xe khác tông, bị hất vào đường đi của xe công ty. Xe công ty tông trúng, rồi lúc cố tấp vào lề đã kéo người này khoảng 6 m với tốc độ khoảng 7 dặm/giờ.','Báo cáo của cơ quan cấp phép'],
+  ['Hai bên mâu thuẫn về video: công ty nói đã cho xem video đầy đủ nhiều lần từ 3/10; cơ quan cấp phép nói video đó không có đoạn xe kéo người, họ biết từ một cơ quan khác.','Hai phía, qua báo chí']],
+ pressure:'Luật sư thành phố đề nghị xem lại quyết định tháng 8; công đoàn tài xế biểu tình; công ty đang đốt tiền nhanh.',
+ outcome:'Ngày 24/10/2023, cơ quan cấp phép đình chỉ có hiệu lực ngay giấy phép chạy và thử nghiệm xe không người lái của công ty, với lý do rủi ro không chấp nhận được cho an toàn công cộng và cáo buộc trình bày sai về an toàn. Công ty phản bác một số cáo buộc, nói đã cho xem video đầy đủ, và tuyên bố tạm dừng chạy xe không người lái ở thành phố.',
+ nums:[['≈ 2 tháng','từ phê duyệt (8/2023) đến đình chỉ (24/10/2023)'],['2/10/2023','ngày xảy ra tai nạn'],['≈ 900 người','nhân sự bị cắt (12/2023)']],
+ hard:[
+  'Mất giấy phép ngày 24/10/2023 và bị nghi che giấu video.',
+  'Khủng hoảng lãnh đạo: 9 lãnh đạo bị cho thôi việc; cắt khoảng 24% nhân sự (≈ 900 người, trên tổng 3.800) vào 12/2023.',
+  'Ngân sách bị cắt khoảng 1 tỷ USD mỗi năm.',
+  'Tháng 11/2024 nhận tội nộp báo cáo sai cho NHTSA, nộp phạt 500.000 USD theo thỏa thuận hoãn truy tố với Bộ Tư pháp Mỹ.'],
+ sol:[
+  'Thuê hai bên độc lập: văn phòng luật Quinn Emanuel điều tra cách quản lý sự việc (báo cáo 195 trang, phỏng vấn 88 người, xem hơn 200.000 tài liệu), công ty kỹ thuật Exponent phân tích nguyên nhân kỹ thuật. Kết luận 1/2024: công ty không công khai thông tin quan trọng, xe mắc nhiều lỗi.',
+  'Thu hồi phần mềm cho toàn bộ đội xe (khoảng 950 xe) và dừng chạy không người lái để rà soát.',
+  ],
+ res:[
+  'Các giải pháp đến không đủ để giữ dự án. Ngày 10/12/2024 GM ngừng tài trợ phát triển robotaxi của Cruise, sau khoảng 2,4 tỷ USD đầu tư, vì thời gian và nguồn lực để mở rộng quá lớn lại gặp cạnh tranh mạnh; tái cơ cấu để giảm chi tiêu hơn 1 tỷ USD/năm, chuyển sang hỗ trợ lái.',
+  'Đầu 2025 cắt khoảng một nửa nhân sự (thông báo 4/2/2025).',
+  'Đây là case “dừng” thật sự.'],
+ table:[
+  ['Đình chỉ giấy phép 24/10/2023, lý do rủi ro không chấp nhận được và trình bày sai về an toàn',PART,L('CNN qua ABC17','https://abc17news.com/money/cnn-business-consumer/2023/10/24/california-revokes-gm-self-driving-car-subsidiary-permit-citing-unreasonable-risk-to-public-safety/')+' · '+L('NPR qua WFAE','https://www.wfae.org/2023-10-24/california-orders-cruise-driverless-cars-off-the-roads-because-of-safety-concerns')+' · '+L('Mission Local','https://missionlocal.org/2023/10/cruise-robotaxis-grounded-in-sf-by-dmv-effective-immediately/')],
+  ['Báo cáo bên thứ ba 195 trang, 88 người được phỏng vấn, > 200.000 tài liệu; Exponent phân tích kỹ thuật',OK,L('Cruise công bố','https://getcruise.com/news/blog/2024/cruise-releases-third-party-findings-regarding-october-2')+' · '+L('Law.com','https://law.com/2024/01/30/quinn-emanuel-probe-of-cruise-crash-found-clo-not-actively-engaged-as-crisis-unfolded')+' · '+L('Stanford CIS','https://cyberlaw.stanford.edu/blog/2024/01/on-cruises-crash-and-quinns-report')+' · '+L('China Daily','https://mobile.chinadaily.com.cn/html5/2024-02/05/content_016_65bffd38ed50211e677e9684.htm')],
+  ['Cắt 24% nhân sự (≈ 900 người, trên 3.800) ngày sau khi 9 lãnh đạo bị cho thôi việc; thu hồi phần mềm khoảng 950 xe (nguồn lệch về số xe thu hồi)',OK,L('Bloomberg','https://www.bloomberg.com/news/articles/2023-12-14/gm-s-cruise-cuts-900-workers-amid-executive-exits-safety-probe')+' · '+L('CBS News','https://cbsnews.com/sanfrancisco/news/9-key-leaders-depart-gms-cruise-amid-ongoing-investigation-into-san-francisco-incident')],
+  ['Phạt 500.000 USD, nhận nộp báo cáo sai cho NHTSA (11/2024, thỏa thuận hoãn truy tố)',OK,L('Bộ Tư pháp Mỹ','https://www.justice.gov/usao-ndca/pr/cruise-admits-submitting-false-report-influence-federal-investigation-and-agrees-pay')],
+  ['GM ngừng tài trợ 10/12/2024; ≈ 2,4 tỷ USD đầu tư; giảm chi tiêu > 1 tỷ USD/năm',OK,L('AP qua News4Jax','https://www.news4jax.com/business/2024/12/10/gm-to-retreat-from-robotaxis-and-stop-funding-its-cruise-autonomous-vehicle-unit/')+' · '+L('KQED','https://www.kqed.org/news/12017519/after-losing-billions-gm-ends-effort-to-develop-cruise-robotaxis')+' · '+L('Silicon UK','https://silicon.co.uk/e-innovation/green-it/gm-kills-cruise-robotaxi-business-after-funding-is-pulled-592395')],
+  ['Cắt khoảng 50% nhân sự đầu 2025',PART,L('Gazetteer SF','https://sf.gazetteer.co/after-eliminating-half-of-its-staff-last-month-cruise-still-isnt-done-with-layoffs')],
+  ],
+ teacher:{
+  why:'không chỉ vì tai nạn, mà vì cơ quan cấp phép cho rằng công ty không cung cấp đủ thông tin. Niềm tin vào dữ liệu bị mất.',
+  miss:'số tai nạn trên mỗi triệu dặm, hồ sơ video gốc, kết luận điều tra độc lập.',
+  good:'công ty chủ động tạm dừng chạy và có lối quay lại hoạt động do cơ quan cấp phép chỉ ra.',
+  open:'một vụ việc hiếm có đủ để thu hồi phép không, hay lý do chính là cách công ty báo cáo? Nếu Cruise điều tra độc lập ngay từ tuần đầu, kết cục có khác không?'}
+},
+{
+ id:'D', tab:'D · Waymo', flag:'Mỹ · 2024', title:'Một dịch vụ taxi tự lái, Mỹ, cuối 2024', real:'Waymo (Alphabet)',
+ teaser:'Mở rộng theo bậc, có bên thứ ba kiểm chứng dữ liệu an toàn.',
+ context:'Một công ty con của tập đoàn công nghệ lớn đang chở khách trả tiền không có tài xế tại vài thành phố Mỹ.',
+ role:'Bạn là thành viên ban lãnh đạo, cuối 2024. Bạn cần quyết có thêm xe và thêm thành phố hay không.',
+ evidence:[
+  ['Tháng 5/2024 khoảng 50.000 chuyến trả tiền/tuần, cuối 2024 khoảng 100.000 chuyến/tuần; tháng 6/2024 dịch vụ ở thành phố đầu tiên mở cho mọi người, không còn danh sách chờ.','Công ty, qua báo chí'],
+  ['Tháng 12/2024, công ty cùng hãng tái bảo hiểm Swiss Re công bố nghiên cứu trên 25,3 triệu dặm không người lái: ít hơn khoảng 88% khiếu nại tài sản và 92% khiếu nại thương tích so với tài xế người. Chỉ có 9 và 2 khiếu nại; bản thảo chưa qua bình duyệt.','Nghiên cứu do công ty và bên bảo hiểm cùng thực hiện'],
+  ['Tổng quãng đường không người lái vượt 50 triệu dặm tính đến báo cáo an toàn tháng 12/2024.','Công ty'],
+  ['Năm 2023, đối thủ cùng ngành bị đình chỉ giấy phép sau một tai nạn và cáo buộc thiếu minh bạch; công đoàn tài xế vẫn biểu tình phản đối mở rộng.','Báo chí']],
+ pressure:'Nhà đầu tư và đối thủ muốn mở rộng nhanh; công đoàn tài xế và một số quan chức muốn chậm lại; cả ngành đang bị soi kỹ sau vụ của đối thủ.',
+ outcome:'Công ty đi tiếp và mở rộng mạnh. Tháng 4/2025 vượt 250.000 chuyến trả tiền/tuần. Tháng 2/2026 công ty huy động 16 tỷ USD (định giá khoảng 126 tỷ USD), nói đã có 400.000 chuyến trả tiền/tuần ở 6 thành phố lớn của Mỹ, và đặt mục tiêu trên 1 triệu chuyến/tuần vào cuối 2026.',
+ nums:[['100.000 → 400.000','chuyến/tuần, cuối 2024 → 2/2026'],['16 tỷ USD','vốn huy động 2/2026'],['25,3 triệu dặm','nghiên cứu Swiss Re'],['88% / 92%','so với tài xế nói chung']],
+ hard:[
+  'Phản đối của công đoàn tài xế và một số quan chức thành phố; ngành bị soi kỹ sau vụ Cruise.',
+  'Con số do hãng công bố cần kiểm chứng: so với xe đời 2018–2021 mức giảm là 86% và 90% (thấp hơn con số nổi bật).'],
+ sol:[
+  'Mở rộng theo bậc: chạy có người giám sát, rồi không người lái, rồi mở cho công chúng.',
+  'Công bố dữ liệu an toàn và hợp tác với Swiss Re để có người thứ ba kiểm tra; công bố thêm bài báo trên tạp chí Traffic Injury Prevention (56,7 triệu dặm: ít hơn 85% vụ va chạm gây thương tích nghiêm trọng trở lên).',
+  'Huy động vốn lớn: 16 tỷ USD (2/2026).'],
+ res:[
+  'Tăng từ 100.000 lên ≥ 400.000 chuyến trả tiền/tuần trong khoảng 14 tháng; mục tiêu trên 1 triệu chuyến/tuần cuối 2026 và kế hoạch mở thêm khoảng 20 thành phố trong 2026, trong đó có London và Tokyo.'],
+ table:[
+  ['25,3 triệu dặm: ít hơn 88% khiếu nại tài sản, 92% khiếu nại thương tích (so với tài xế nói chung); 86%/90% so với xe đời 2018–2021; 9 + 2 khiếu nại; chưa bình duyệt khi công bố',OK,L('Waymo 12/2024','https://waymo.com/blog/2024/12/new-swiss-re-study-waymo/')+' · '+L('Electrek','https://electrek.co/2024/12/19/study-waymos-robotaxi-provides-higher-safety-performance-than-human-drivers/')+' · '+L('Engadget','https://www.engadget.com/transportation/waymos-driverless-cars-are-apparently-an-insurance-companys-dream-220746643.html')],
+  ['Bài trên Traffic Injury Prevention, 56,7 triệu dặm: ít hơn 85% va chạm gây thương tích nghiêm trọng trở lên (do chính Waymo công bố)',PART,L('Waymo, 5/2025','https://waymo.com/blog/2025/05/waymo-making-streets-safer-for-vru')],
+  ['Huy động 16 tỷ USD (2/2026), định giá ≈ 126 tỷ USD; 400.000 chuyến/tuần ở 6 thành phố; mục tiêu > 1 triệu chuyến/tuần cuối 2026',OK,L('Claims Journal 12/2/2026','https://amp.claimsjournal.com/news/national/2026/02/12/335668.htm')+' · '+L('The Robot Report','https://www.therobotreport.com/waymo-keeps-foot-autonomous-vehicle-pedal-16b-funding/')],
+  ],
+ teacher:{
+  why:'có chuỗi số liệu lớn và tăng dần, có bên thứ ba tham gia kiểm chứng, và mở rộng theo từng thành phố.',
+  miss:'nghiên cứu hoàn toàn độc lập ở thời điểm quyết định, số liệu theo thời tiết, đêm, đường cao tốc.',
+  good:'công bố dữ liệu an toàn và dùng bên ngoài để kiểm chứng.',
+  open:'khi bên bảo hiểm cùng thực hiện nghiên cứu với công ty, mức tin cậy nên là bao nhiêu? Mẫu chỉ có 11 khiếu nại; con số 88%/92% có đủ làm bằng chứng không?'}
+}];
+
+/* ---------- RENDER ---------- */
+const $=s=>document.querySelector(s);
+const tabs=[{id:'home',label:'Tổng quan'},...cases.map(c=>({id:c.id,label:c.tab})),{id:'common',label:'Điểm chung & nguồn'}];
+$('#tabs').innerHTML=tabs.map(t=>`<button role="tab" data-id="${t.id}" aria-selected="false">${t.label}</button>`).join('');
+
+function home(){
+ return `<section class="panel" id="p-home">
+ <h2>Bằng chứng nào đủ để thêm xe, thêm vùng chạy?</h2>
+ <p class="lead">Bộ tài liệu hoạt động nhóm, ngày 10 · 2–3 người một case · mỗi case có thẻ tình huống, kết cục, khó khăn đã gặp, giải pháp và kết quả (riêng Case B VinFast chưa có kết cục vì còn đang diễn ra).</p>
+ <div class="card"><h3>Thứ tự 5 bước</h3>
+  <ol class="steps">
+   <li><b>Câu 1.</b> Chuyện gì đã xảy ra đến lúc này? Bằng chứng nào, ai đưa ra?</li>
+   <li><b>Câu 3.</b> Nếu là bạn lúc đó, bạn quyết gì? Chọn 1 trong 4 hướng (đi tiếp · đi tiếp hẹp hơn có điều kiện · làm thêm rồi quyết lại · dừng) và ghi 1 câu lý do.</li>
+   <li><b>Nhận kết cục.</b> Chỉ mở phong bì (✉) khi ô quyết định đã có chữ.</li>
+   <li><b>Câu 2.</b> Vì sao họ dừng lại, hoặc vì sao họ đi tiếp được? Xem cả khó khăn, giải pháp, kết quả.</li>
+   <li><b>Sticky.</b> 2–3 tờ vàng (điều còn thiếu) và 1 tờ xanh (điều họ làm tốt).</li></ol>
+  <p class="src">Cuối phiếu: quyết định của nhóm so với điều đã xảy ra – Khớp · Khác hướng nhưng vẫn hợp lý · Nếu biết kết cục, nhóm sẽ đổi.</p></div>
+ <div class="overview">${cases.map(c=>`<button class="ocard" data-go="${c.id}"><span class="chip">Case ${c.id} · ${c.flag}</span><b>${c.title}</b><span>${c.teaser}</span></button>`).join('')}</div>
+ <div class="note" style="margin-top:16px"><b>Cách đọc độ tin cậy.</b> Mỗi con số trong bảng bằng chứng có nhãn: ${OK} khớp nguồn khi tra lại ngày 18/11/2026; ${PART} một nguồn báo chí, nguồn thứ cấp hoặc hãng tự công bố. Các dữ kiện không kiểm chứng được đã được xóa khỏi bản này.</div>
+ </section>`;
+}
+
+function casePanel(c,i){
+ const prev=cases[i-1],next=cases[i+1];
+ return `<section class="panel" id="p-${c.id}">
+ <div class="hero"><span class="chip">Case ${c.id} · ${c.flag}</span><span class="chip neutral">Hãng thật: ${c.real} (ẩn tên khi phát cho học sinh)</span></div>
+ <h2>${c.title}</h2>
+ <p class="lead">${c.context}</p>
+
+ <div class="card"><h3>1 · Thẻ case: bằng chứng đang có</h3>
+  <ul class="ev">${c.evidence.map(e=>`<li>${e[0]}<span class="src">Nguồn: ${e[1]}</span></li>`).join('')}</ul>
+  <p style="margin:14px 0 0"><b>Áp lực:</b> ${c.pressure}</p>
+  <div class="role"><b>Bạn là ai, cần quyết gì</b>${c.role}</div>
+ </div>
+
+ <details class="env"><summary>Phong bì kết cục – chỉ mở khi ô quyết định đã có chữ</summary><div class="in">
+  <p>${c.outcome}</p>
+  <div class="bignum">${c.nums.map(n=>`<div><strong>${n[0]}</strong><small>${n[1]}</small></div>`).join('')}</div>
+ </div></details>
+
+ <div class="card"><h3>2 · Khó khăn → Giải pháp → Kết quả đến nay</h3>
+  <div class="grid3">
+   <div class="col k"><h4>Khó khăn đã gặp</h4><ul>${c.hard.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+   <div class="col g"><h4>Giải pháp họ dùng</h4><ul>${c.sol.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+   <div class="col r"><h4>Kết quả hiện tại</h4><ul>${c.res.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+  </div></div>
+
+ <div class="card"><h3>3 · Bảng đối chiếu bằng chứng &amp; link nguồn</h3>
+  <div class="tw"><table><thead><tr><th>Con số / dữ kiện</th><th>Độ tin cậy</th><th>Nguồn</th></tr></thead>
+  <tbody>${c.table.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div></div>
+
+ ${c.hyp?`<div class="note"><b>Nhận định của nhóm: agent AI mới và tiến độ</b><br>${c.hyp.claim}<ul style="margin:8px 0 8px">${c.hyp.why.map(x=>`<li>${x}</li>`).join('')}</ul><i>${c.hyp.check}</i></div>`:''}
+ <div class="card"><h3>4 · Gợi ý cho giáo viên</h3>
+  <div class="teach">
+   <div class="t-n"><b>Vì sao đi tiếp / dừng</b>${c.teacher.why}</div>
+   <div class="t-y"><b>Sticky vàng · điều còn thiếu</b>${c.teacher.miss}</div>
+   <div class="t-g"><b>Sticky xanh · điều làm tốt</b>${c.teacher.good}</div>
+   <div class="t-b"><b>Câu hỏi mở</b>${c.teacher.open}</div>
+  </div></div>
+
+ <div class="pager">${prev?`<button data-go="${prev.id}">← Case ${prev.id}</button>`:'<button data-go="home">← Tổng quan</button>'}
+ ${next?`<button data-go="${next.id}">Case ${next.id} →</button>`:'<button data-go="common">Điểm chung →</button>'}</div>
+ </section>`;
+}
+
+function common(){
+ return `<section class="panel" id="p-common">
+ <h2>Điểm chung để cả lớp thảo luận</h2>
+ <p class="lead">Nhìn xuyên suốt 4 case: điều gì giúp “đi tiếp được”, điều gì buộc phải dừng.</p>
+ <div class="card"><ul>
+  <li>Những bên “đi tiếp được” đều có ít nhất một điều: mở rộng theo bậc thay vì một bước, dữ liệu có người ngoài kiểm tra, quan hệ minh bạch với cơ quan quản lý, và chi phí mỗi xe giảm dần.</li>
+  <li>Hai bên gặp khó nhất (Cruise, và một phần Tesla) đều có vấn đề về niềm tin vào dữ liệu hoặc về tốc độ so với lời hứa, không chỉ về công nghệ.</li>
+  <li>VinFast cho thấy một tình huống khác: chưa có kết cục để so sánh. Kế hoạch (200 xe cấp 4, cuối 2027) đã công bố, nhưng giấy phép và dữ liệu an toàn thì chưa có, nên điều cần học là biết đòi bằng chứng gì trước khi chấp thuận.</li>
+  <li>Waymo cho thấy “có người ngoài kiểm chứng” cũng có giới hạn: mẫu nhỏ (11 khiếu nại), cùng do hãng và bên bảo hiểm thực hiện, chưa bình duyệt khi công bố.</li></ul>
+  <p><b>Câu hỏi gợi ý:</b> (1) Giải pháp nào trong bốn case có người ngoài kiểm chứng, giải pháp nào chỉ do chính công ty nói? (2) Nếu Cruise làm điều tra độc lập ngay từ tuần đầu, kết cục có khác không? (3) Số liệu nào bạn muốn kiểm lại trước khi tin?</p></div>
+ <div class="card"><h3>Bảng tổng hợp</h3><div class="tw"><table>
+  <thead><tr><th>Case</th><th>Kết cục</th><th>Điều giúp họ đi tiếp / khiến họ dừng</th></tr></thead><tbody>
+  <tr><td>A · Tesla</td><td>Đi tiếp, bỏ giám sát viên sau 7 tháng</td><td>Quy mô nhỏ, hỗ trợ từ xa, không có cơ quan chặn trước; điểm yếu: dữ liệu do hãng nắm, sự cố vẫn tăng</td></tr>
+  <tr><td>B · VinFast</td><td>Chưa có kết cục (kế hoạch cuối 2027, chưa cấp phép)</td><td>Hợp tác đối tác công nghệ, thử trong khu đô thị riêng; thiếu dữ liệu an toàn công khai và khung cấp phép</td></tr>
+  <tr><td>C · Cruise</td><td>Dừng: mất phép, GM ngừng tài trợ 12/2024</td><td>Mất niềm tin vào dữ liệu và cách báo cáo, không chỉ do tai nạn</td></tr>
+  <tr><td>D · Waymo</td><td>Đi tiếp, mở rộng mạnh</td><td>Mở rộng theo bậc, dữ liệu có bên thứ ba kiểm tra, vốn lớn</td></tr></tbody></table></div></div>
+ <div class="card"><h3>Những điểm đã sửa so với bản trước (kiểm lại 18/11/2026)</h3><ul>
+  <li><b>Đã xác nhận:</b> Cruise cắt 24% (≈ 900 người), 9 lãnh đạo thôi việc, thu hồi khoảng 950 xe, phạt 500.000 USD (11/2024), cắt khoảng một nửa nhân sự đầu 2025; Waymo huy động 16 tỷ USD; Tesla chạy không giám sát ở Austin, Dallas, Houston; VinFast: các thông cáo 27/1/2026 và 1/6/2026, kế hoạch 200 xe cấp 4 ở Cần Giờ (báo cáo quý II/2026).</li>
+  <li><b>Đã xóa vì không kiểm chứng được:</b> Tesla “6 thành phố”, “42 xe đăng ký ở Texas”, số xe theo dõi của bên thứ ba, mục tiêu 7 thành phố; Cruise mốc chạy lại thử nghiệm, cắt đội xe 300 → 50/150, CEO từ chức, điều tra phanh gấp, đợt cắt nhân sự nhỏ sau 2/2025; Waymo “nghiên cứu độc lập 81%”, 500.000 chuyến/tuần ở 10 thành phố, thế hệ 6 giảm một nửa chi phí, mô tả cảm biến, chi phí phần cứng; VinFast chuyến thử ở Đức; Baidu (case cũ) đã thay bằng VinFast.</li>
+  </ul></div>
+ <div class="pager"><button data-go="D">← Case D</button><button data-go="home">Về tổng quan</button></div>
+ </section>`;
+}
+
+$('#main').innerHTML=home()+cases.map(casePanel).join('')+common();
+
+function show(id){
+ if(!tabs.some(t=>t.id===id)) id='home';
+ document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+id));
+ document.querySelectorAll('#tabs button').forEach(b=>{
+  const on=b.dataset.id===id; b.setAttribute('aria-selected',on);
+  if(on) b.scrollIntoView({inline:'center',block:'nearest'});
+ });
+ try{history.replaceState(null,'','#'+id)}catch(e){}
+ window.scrollTo({top:0});
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-id],[data-go]'); if(!b) return;
+ show(b.dataset.id||b.dataset.go);
+});
+show(location.hash.slice(1)||'home');
+</script>
+</body>
+</html>
